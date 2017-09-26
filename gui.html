@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/dat.gui.js" ></script>
+		<script type="text/javascript" src="js/jquery-2.0.3.min.js" ></script>
+		<script type="text/javascript" src="layer/layer.js" ></script>
+		<style>
+			
+			body{
+				background:sandybrown
+			}
+		</style>
+	</head>
+	<body>
+		<div style="margin: 0 auto; width: 800px; text-align: center;"><input type="text" id="modeType" value="modeType"  /></div>
+		<script>
+	var Options = function() {
+	  this.message = 'dat.gui';
+	  this.speed = 0.8;
+	  this.displayOutline = false;
+	  this.button = function() {
+	  	console.log("点击按钮");
+	  	
+	  };
+		this.select = function() {
+	  	console.log("选择模型类型");
+	  
+		layer.open({
+			  type: 1,
+			  skin: 'layui-layer-rim', //加上边框
+			  area: ['420px', '240px'], //宽高
+			  content: '<a href="javascript:void(0)" onclick="subgo(1)">点我1</a><a href="javascript:void(0)" onclick="subgo(2)">点我2</a>'
+		});
+	 };
+	  this.closeALl = function(a) {
+	 		 layer.closeAll();
+	 		 console.log("closeALl"+a)
+	 	 };
+	};
+	function subgo(info){
+		alert("进入方法"+info);
+		$('#modeType').val(info);
+	}
+
+
+
+window.onload = function() {
+  var options = new Options();
+  var gui = new dat.GUI();
+	
+  gui.add(options, 'message');
+  gui.add(options, 'speed', -5, 5);
+  gui.add(options, 'displayOutline');
+  gui.add(options, 'button');
+   gui.add(options, 'select');
+
+	
+};
+		
+		</script>
+	</body>
+</html>

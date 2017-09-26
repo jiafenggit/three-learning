@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="js/jquery-2.0.3.min.js" ></script>
+		<script type="text/javascript" src="js/three.js" ></script>
+		
+		<script type="text/javascript" src="js/Stats.js" ></script>
+		<script type="text/javascript" src="js/dat.gui.js" ></script>
+		<script type="text/javascript" src="js/OBJLoader.js" ></script>
+		<script type="text/javascript" src="js/TrackballControls.js" ></script>
+		<script type="text/javascript" src="js/DragControls.js" ></script>
+		<script type="text/javascript" src="layer/layer.js" ></script>
+		<script type="text/javascript" src="js/viewEdit.js" ></script>
+		<title>机房3D模型图</title>
+	</head>
+	<style>
+		body{
+			margin: 0;
+			overflow: hidden;
+		}
+		#divMessage {
+			height: auto;
+			 width: 8%; 
+			 position:absolute;
+			  z-index:1;
+			  float:left;
+			  top:6%;
+			  left:5px;
+			  border: 2px solid black; 
+			  text-align: center;
+		}
+		#titile {
+			background: black;
+			 position:absolute;
+			 border: 2px solid black; 
+			 width: 8%;
+			 z-index:1;
+			 left:5px;
+			 top:5px;
+			 height:6%;
+			 text-align: center;
+			 
+		}
+		#modelView {
+			color: chartreuse; 
+			font-size: 10px;
+			
+		}
+		#modelView:hover {
+			color: blue; 
+			cursor: pointer;
+		}
+		#WebGL-output {
+			 z-index:9999;
+			 
+		}
+	</style>
+	<body>
+		
+<div id="divMessage">
+     <p style="color: black; font-size: 12px;">预选机柜模型</p>
+     <p  id="modeName"  style="color: aliceblue;font-size: 10px;">暂无选择</p>
+	<img src="img/icon.gif" id="modelPic" style="width: 100%; height:95%;" /> 
+	 <p><a id="modelView" onclick="updateModelType()" >点击选择</a></p>
+</div>
+
+	<div id="titile">
+     <p style="color: white; font-size:1em; line-height:100%;">建模系统</p>
+    
+</div>
+		<div id="Stats-output">
+
+		</div>
+		<div id="WebGL-output">
+		</div>
+		<script>
+			
+			window.onload = init();
+			var camera, controls, scene, renderer,trackballControls,mesh;
+			var gui;
+			function init(){
+				//直接开启帧数检测
+				var stats = initStats();
+				gui = new dat.GUI();
+				
+				//编辑代码处
+				scene = new THREE.Scene();//场景构建
+				
+				//scene.fog = new THREE.Fog(0xffffff,0.015,100);雾化效果
+				camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);//相机构建
+				
+				//创建控件并绑定在相机上
+				trackballControls = new THREE.TrackballControls(camera);
+				 
+				trackballControls.rotateSpeed = 1.0;
+				trackballControls.zoomSpeed = 1.0;
+				trackballControls.panSpeed = 1.0;
+				trackballControls.noZoom=false;
+				trackballControls.noPan=false;
+				trackballControls.staticMoving = true;
+				trackballControls.dynamicDampingFactor = 0.3;
+				
+				
+				
+				
+				renderer = new THREE.WebGLRenderer();//渲染器构建
+				renderer.setClearColor(	0xB4CDCD);
+				renderer.setSize(window.innerWidth,window.innerHeight);
+				renderer.shadowMapEnabled = true;//激活阴影
+				renderer.shadowMapType = THREE.PCFSoftShadowMap;
+				renderer.antialias = true;
+				//构建一个坐标轴
+				var axes = new THREE.AxisHelper(20);
+				//scene.add(axes);
+				var planeGeometry = new THREE.PlaneGeometry(50, 30, 1, 1);
+				var planeMaterial = new THREE.MeshPhongMaterial({color:0xffffff});
+				//var planeMaterial = new THREE.MeshLambertMaterial({color:0x808080});//转换对光源有渲染的材质
+				var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+				plane.rotation.x = -0.5*Math.PI;
+				plane.position.x = 15;
+				plane.position.y = -1;
+				plane.position.x = 0;
+				//scene.add(plane);
+				plane.receiveShadow  = true;
+				//渲染视图视角
+				camera.position.x = 5;
+				camera.position.y = 30;
+				camera.position.z = 40;
+				
+				camera.lookAt(scene.position);
+			
+				//添加材质灯光阴影
+				 var spotLight = new THREE.SpotLight(0xffffff);
+				 spotLight.shadowDarkness = 0.1;
+				 spotLight.position.set(20,40,30);
+				 spotLight.castShadow = true;
+				 spotLight.exponent = 1;
+				 spotLight.target = plane;
+				 
+				 scene.add(spotLight);
+				 
+				 $("#WebGL-output").append(renderer.domElement);
+				 addRoom();
+				 var controls = new function () {
+				 	
+					 	this.rotationSpeed = 0.02;
+			            this.numberOfObjects = scene.children.length;
+			            this.添加机柜 = function () {
+			            	
+			            	var objname = $("#modeName").text();
+			            	console.log("机柜地址："+objname);
+			            	if(objname=='暂无选择'){
+			            		layer.msg('你还没有选择左上角的预选模型呢', {
+								  time: 20000, //20s后自动关闭
+								  anim:4,
+								  btn: ['明白了']
+								});			            		
+			            		return;
+			            	}
+			            	var objURL = "obj/"+objname+".obj";
+						var loader = new THREE.OBJLoader();
+				      		  	loader.load(objURL, function (loadedMesh) {
+				      		  
+				      			var material = new THREE.MeshLambertMaterial();
+				           		 loadedMesh.children.forEach(function (child) {
+				            	child.castShadow = true;
+				            	child.name="aaa";
+				                child.material = material;
+				                child.geometry.computeFaceNormals();
+				                child.geometry.computeVertexNormals();
+				            });
+					            mesh = loadedMesh;
+					            loadedMesh.scale.set(0.02, 0.02, 0.02);
+					            loadedMesh.rotation.x =0;
+					            loadedMesh.rotation.y =0;
+					            loadedMesh.rotation.z =0;
+				                loadedMesh.position.x = -20;
+				                loadedMesh.position.y = 0.01;
+				                loadedMesh.position.z = 12;
+				                // add the cube to the scene
+				                var NowTimestamp = objname+Date.parse(new Date());
+				                
+				                loadedMesh.name=NowTimestamp;
+				                scene.add(loadedMesh);
+				                this.numberOfObjects = scene.children.length;  
+
+			            		 var conName = NowTimestamp;
+			            		
+								var conName = new function () {
+								
+								    this.positionX = loadedMesh.position.x;
+						            this.positionZ = loadedMesh.position.z;
+						          	this.rotationY = loadedMesh.rotation.y;
+						            this.translate = function () {
+						                conName.positionX = loadedMesh.position.x;
+						                conName.positionZ = loadedMesh.position.z;
+						                conName.rotationY = loadedMesh.rotation.y;
+						            }
+								}
+				                var name= NowTimestamp;
+				                guiPosition = gui.addFolder(name);
+						        var contX = guiPosition.add(conName, 'positionX', -20, 27);
+						        var contZ = guiPosition.add(conName, 'positionZ', -12, 12);
+						        var contY = guiPosition.add(conName, 'rotationY',-4, 4);
+						        contX.listen();
+						        contX.onChange(function (value) {
+						            loadedMesh.position.x = conName.positionX;
+						        });
+						        contZ.listen();
+						        contZ.onChange(function (value) {
+						            loadedMesh.position.z = conName.positionZ;
+						        }); 
+						        contY.listen();
+						        contY.onChange(function (value) {
+						            loadedMesh.rotation.y = conName.rotationY;
+						        });
+		           			 });
+						 };
+						 this.保存  = function () {
+						 	 var allChildren = scene.children;
+						 	 for (var sum=0; sum< allChildren.length;sum++) {
+						 	 	if(sum>7){
+						 	 		console.log(allChildren[sum]);
+						 	 		console.log(allChildren[sum].name+"第"+sum+"个物体的x="+allChildren[sum].position.x+"Z="+allChildren[sum].position.z+"旋转="+allChildren[sum].rotation.y);
+						 	 	}
+						 	 }
+						 }; 
+						 
+						 this.视图1 = function (){
+						 	camera.position.x = 5;
+							camera.position.y = 30;
+							camera.position.z = 40;
+							camera.lookAt(scene.position);
+						 }
+						 this.视图2 = function (){
+						 	camera.position.x = -5;
+							camera.position.y = 30;
+							camera.position.z = 40;
+							camera.lookAt(scene.position);
+						 }
+						  this.视图3 = function (){
+						 	camera.position.x = -40;
+							camera.position.y = 40;
+							camera.position.z = 0;
+							camera.lookAt(scene.position);
+						 }
+						   this.视图4 = function (){
+						 	camera.position.x = 50;
+							camera.position.y = 40;
+							camera.position.z = 0;
+							camera.lookAt(scene.position);
+						 }
+						   this.视图5 = function (){
+						 	camera.position.x = 0;
+							camera.position.y = 100;
+							camera.position.z = 0;
+							camera.lookAt(scene.position);
+						 }
+       			};
+			        guiPositionUpdateView = gui.addFolder("切换视角");
+			        guiPositionUpdateView.add(controls, '视图1');
+			        guiPositionUpdateView.add(controls, '视图2');
+			        guiPositionUpdateView.add(controls, '视图3');
+			        guiPositionUpdateView.add(controls, '视图4');
+			        guiPositionUpdateView.add(controls, '视图5');
+			        guiPositionSave = gui.addFolder("场景操作");
+			        guiPositionSave.add(controls, '添加机柜');
+			        guiPositionSave.add(controls, '保存');
+			        animate();
+			       
+			        function animate(){
+			        	 stats.update();
+			        	 renderScene();
+			        	 requestAnimationFrame(animate);
+			        }
+				        var clock = new THREE.Clock();
+			       		var delta = clock.getDelta();
+					function renderScene(){
+						trackballControls.update(delta);
+						 renderer.render(scene,camera);
+					}	 
+				//初始化帧数状态
+					function initStats(){
+						var stats = new Stats();
+						stats.setMode(0);
+						stats.domElement.style.position = "absolute";
+						stats.domElement.style.left = "0px";
+						stats.domElement.style.top  = "0px";
+						//$("#Stats-output").append(stats.domElement);
+						return stats;
+					}
+			}
+			
+
+			
+			
+			function updateModelType(){
+				var modelTypeHtml = '<div style="padding-right:10px;padding-left:10px">';
+					
+				modelTypeHtml +='<img  src="img/wen.jpg" id="wen" name = "wen" onclick="checkEnd(this.src,this.name)" style="width: 200px; height: 200px; margin:5px;"/>';
+					modelTypeHtml +='<img  src="img/tv.jpg" id="tv" name = "tv" onclick="checkEnd(this.src,this.name)" style="width: 200px; height: 200px; margin:5px;"/>';
+
+					modelTypeHtml+='</div>';
+						 	layer.open({
+						 		 title: '双击选择模型',
+						 		 skin: 'layui-layer-demo',
+								  type: 1,
+								  anim:2,
+								  skin: 'layui-layer-rim', //加上边框
+								  area: ['650px', '500'], //宽高
+								  content: modelTypeHtml
+							});
+							
+			}
+			function checkEnd(picUrl,name){
+				layer.closeAll();
+				$("#modelPic").attr('src',picUrl); 
+				console.log(name);
+				 $("#modeName").text(name);
+			}
+			
+			
+			$("#quan").click(function(){
+			        screenfull.toggle();
+			});
+		</script>
+	</body>
+</html>
