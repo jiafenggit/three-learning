@@ -4,7 +4,6 @@
 		<meta charset="UTF-8">
 		<script type="text/javascript" src="js/jquery-2.0.3.min.js" ></script>
 		<script type="text/javascript" src="js/three.js" ></script>
-		
 		<script type="text/javascript" src="js/Stats.js" ></script>
 		<script type="text/javascript" src="js/dat.gui.js" ></script>
 		<script type="text/javascript" src="js/OBJLoader.js" ></script>
@@ -91,7 +90,7 @@
 				camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);//相机构建
 				
 				//创建控件并绑定在相机上
-				trackballControls = new THREE.TrackballControls(camera);
+				/*trackballControls = new THREE.TrackballControls(camera);
 				 
 				trackballControls.rotateSpeed = 1.0;
 				trackballControls.zoomSpeed = 1.0;
@@ -99,7 +98,7 @@
 				trackballControls.noZoom=false;
 				trackballControls.noPan=false;
 				trackballControls.staticMoving = true;
-				trackballControls.dynamicDampingFactor = 0.3;
+				trackballControls.dynamicDampingFactor = 0.3;*/
 				
 				
 				
@@ -277,7 +276,7 @@
 				        var clock = new THREE.Clock();
 			       		var delta = clock.getDelta();
 					function renderScene(){
-						trackballControls.update(delta);
+						//trackballControls.update(delta);
 						 renderer.render(scene,camera);
 					}	 
 				//初始化帧数状态
