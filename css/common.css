@@ -1,0 +1,48 @@
+#divMessage {
+			height: auto;
+			 width: 8%; 
+			 position:absolute;
+			  z-index:1;
+			  float:left;
+			  top:6%;
+			  left:5px;
+			  border: 2px solid greenyellow; 
+			  text-align: center;
+		}
+		#titile {
+			background: black;
+			 position:absolute;
+			 border: 2px solid greenyellow; 
+			 width: 8%;
+			 z-index:1;
+			 left:5px;
+			 top:5px;
+			 height:6%;
+			 text-align: center;
+			 
+		}
+		#modelView {
+			color: white; 
+			font-size: 10px;
+			
+		}
+		#modelView:hover {
+			color: blue; 
+			cursor: pointer;
+		}
+		#WebGL-output {
+			 z-index:9999;
+			 
+		}
+		.menu {
+			 background: white;
+			 position:absolute;
+			
+			 width: 4%;
+			 z-index:1;
+			 left:2%;
+			 height:40%;
+			 margin-top: 15%;
+			 text-align: center;
+			border-radius: 5px;
+		}

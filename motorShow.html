@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script type="text/javascript" src="js/jquery-2.0.3.min.js" ></script>
+		<script type="text/javascript" src="js/three.js" ></script>
+		<script type="text/javascript" src="js/Stats.js" ></script>
+		<script type="text/javascript" src="js/dat.gui.js" ></script>
+		<script type="text/javascript" src="js/OBJLoader.js" ></script>
+		<script type="text/javascript" src="js/TrackballControls.js" ></script>
+		<script type="text/javascript" src="js/DragControls.js" ></script>
+		<script type="text/javascript" src="layer/layer.js" ></script>
+		<script type="text/javascript" src="js/viewEdit.js" ></script>
+		<script type="text/javascript" src="js/ping.js" ></script>
+		<link rel="stylesheet" href="css/common.css" />
+
+		<title>机房3D模型图</title>
+	</head>
+	<style>
+		body{
+			margin: 0;
+			overflow: hidden;
+		}
+		.menuImg:hover {
+			cursor: pointer;
+		}
+	</style>
+	<body>
+
+	<div id="titile" style="height: 10%;">
+     <p style="color: white; font-size:1em; line-height:100%;">鑫格建模系统</p>
+     <!--<p style="color: white; font-size:0.5em; line-height:100%;">
+     	<a class="upUrl" style="color: bisque; text-decoration: none;" href="motorEdit.html">[  进入机柜管理  ]</a>
+     </p>-->
+	</div>
+	
+	<div class="menu">
+		<p><img class="menuImg" id="menuImg1"  style="width:50%;" src="img/edit.jpg"/></p>
+		<p><img class="menuImg" id="menuImg2"  style="width:50%;" src="img/edit.jpg"/></p>
+		<p><img class="menuImg" id="menuImg3" style="width:50%;" src="img/edit.jpg"/></p>
+		<p><img class="menuImg" id="menuImg4" style="width:50%;" src="img/edit.jpg"/></p>
+		<p><img class="menuImg" id="menuImg5" style="width:50%;" src="img/edit.jpg"/></p>
+	</div>
+	
+		<div id="Stats-output">
+		</div>
+		<div id="WebGL-output">
+		</div>
+		<script>
+			
+			window.onload = init();
+			var camera, scene, renderer,trackballControls,mesh;
+			var gui;
+			
+			
+			function init(){
+			
+				//直接开启帧数检测
+				var stats = initStats();
+				
+				//编辑代码处
+				scene = new THREE.Scene();//场景构建
+				
+				//scene.fog = new THREE.Fog(0xffffff,0.015,100);雾化效果
+				camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);//相机构建
+				
+				//创建控件并绑定在相机上
+				trackballControls = new THREE.TrackballControls(camera);
+				trackballControls.rotateSpeed = 1.0;
+				trackballControls.zoomSpeed = 1.0;
+				trackballControls.panSpeed = 1.0;
+				trackballControls.noZoom=false;
+				trackballControls.noPan=false;
+				trackballControls.staticMoving = true;
+				trackballControls.dynamicDampingFactor = 0.3;
+				renderer = new THREE.WebGLRenderer();//渲染器构建
+				renderer.setClearColor(	0x0A0A0A);
+				renderer.setSize(window.innerWidth,window.innerHeight);
+				renderer.shadowMapEnabled = true;//激活阴影
+				renderer.shadowMapType = THREE.PCFSoftShadowMap;
+				renderer.antialias = true;
+/*				
+				var arr = [0xBBFFFF,0xBBFFFF,0x8DB6CD, 0x8DB6CD,0x030303,0x030303]; 
+				$("#menuImg2").click(function(){
+					var index = Math.floor((Math.random()*arr.length)); 
+					renderer.setClearColor(arr[index]);
+				});
+				
+				*/
+				//构建一个坐标轴
+				var axes = new THREE.AxisHelper(20);
+				//scene.add(axes);
+				var planeGeometry = new THREE.PlaneGeometry(50, 30, 1, 1);
+				var planeMaterial = new THREE.MeshPhongMaterial({color:0xffffff});
+				//var planeMaterial = new THREE.MeshLambertMaterial({color:0x808080});//转换对光源有渲染的材质
+				var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+				plane.rotation.x = -0.5*Math.PI;
+				plane.position.x = 15;
+				plane.position.y = -1;
+				plane.position.x = 0;
+				//scene.add(plane);
+				plane.receiveShadow  = true;
+				//渲染视图视角
+				camera.position.x = 5;
+				camera.position.y = 30;
+				camera.position.z = 40;
+				
+				camera.lookAt(scene.position);
+			
+				//添加材质灯光阴影
+				 var spotLight = new THREE.SpotLight(0xffffff);
+				 spotLight.shadowDarkness = 0.1;
+				 spotLight.position.set(20,40,30);
+				 spotLight.castShadow = true;
+				 spotLight.exponent = 1;
+				 spotLight.target = plane;
+				 
+				 scene.add(spotLight);
+				 
+				 $("#WebGL-output").append(renderer.domElement);
+				 addRoom();
+				 //【遍历机柜放入场景】
+					
+			        animate();
+			       
+			        function animate(){
+			        	 stats.update();
+			        	 renderScene();
+			        	 requestAnimationFrame(animate);
+			        }
+			        var clock = new THREE.Clock();
+		       		var delta = clock.getDelta();
+					function renderScene(){
+						trackballControls.update(delta);
+						 renderer.render(scene,camera);
+					}	 
+					//初始化帧数状态
+					function initStats(){
+						var stats = new Stats();
+						stats.setMode(0);
+						stats.domElement.style.position = "absolute";
+						stats.domElement.style.left = "0px";
+						stats.domElement.style.top  = "0px";
+						//$("#Stats-output").append(stats.domElement);
+						return stats;
+					}
+			}
+			$("#menuImg1").click(function(){
+				window.location.href = "motorEdit.html"
+			});
+			
+		</script>
+	</body>
+</html>

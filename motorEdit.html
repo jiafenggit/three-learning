@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="js/DragControls.js" ></script>
 		<script type="text/javascript" src="layer/layer.js" ></script>
 		<script type="text/javascript" src="js/viewEdit.js" ></script>
+		<link rel="stylesheet" href="css/common.css" />
 		<title>机房3D模型图</title>
 	</head>
 	<style>
@@ -18,47 +19,11 @@
 			margin: 0;
 			overflow: hidden;
 		}
-		#divMessage {
-			height: auto;
-			 width: 8%; 
-			 position:absolute;
-			  z-index:1;
-			  float:left;
-			  top:6%;
-			  left:5px;
-			  border: 2px solid black; 
-			  text-align: center;
-		}
-		#titile {
-			background: black;
-			 position:absolute;
-			 border: 2px solid black; 
-			 width: 8%;
-			 z-index:1;
-			 left:5px;
-			 top:5px;
-			 height:6%;
-			 text-align: center;
-			 
-		}
-		#modelView {
-			color: chartreuse; 
-			font-size: 10px;
-			
-		}
-		#modelView:hover {
-			color: blue; 
-			cursor: pointer;
-		}
-		#WebGL-output {
-			 z-index:9999;
-			 
-		}
 	</style>
 	<body>
 		
 <div id="divMessage">
-     <p style="color: black; font-size: 12px;">预选机柜模型</p>
+     <p style="color: white; font-size: 12px;">预选机柜模型</p>
      <p  id="modeName"  style="color: aliceblue;font-size: 10px;">暂无选择</p>
 	<img src="img/icon.gif" id="modelPic" style="width: 100%; height:95%;" /> 
 	 <p><a id="modelView" onclick="updateModelType()" >点击选择</a></p>
@@ -69,7 +34,6 @@
     
 </div>
 		<div id="Stats-output">
-
 		</div>
 		<div id="WebGL-output">
 		</div>
@@ -79,6 +43,7 @@
 			var camera, controls, scene, renderer,trackballControls,mesh;
 			var gui;
 			function init(){
+				
 				//直接开启帧数检测
 				var stats = initStats();
 				gui = new dat.GUI();
@@ -91,7 +56,6 @@
 				
 				//创建控件并绑定在相机上
 				/*trackballControls = new THREE.TrackballControls(camera);
-				 
 				trackballControls.rotateSpeed = 1.0;
 				trackballControls.zoomSpeed = 1.0;
 				trackballControls.panSpeed = 1.0;
@@ -99,12 +63,8 @@
 				trackballControls.noPan=false;
 				trackballControls.staticMoving = true;
 				trackballControls.dynamicDampingFactor = 0.3;*/
-				
-				
-				
-				
 				renderer = new THREE.WebGLRenderer();//渲染器构建
-				renderer.setClearColor(	0xB4CDCD);
+				renderer.setClearColor(	0x0A0A0A);
 				renderer.setSize(window.innerWidth,window.innerHeight);
 				renderer.shadowMapEnabled = true;//激活阴影
 				renderer.shadowMapType = THREE.PCFSoftShadowMap;
@@ -177,7 +137,7 @@
 				                loadedMesh.position.x = -20;
 				                loadedMesh.position.y = 0.01;
 				                loadedMesh.position.z = 12;
-				                // add the cube to the scene
+				                // add the obj to the scene
 				                var NowTimestamp = objname+Date.parse(new Date());
 				                
 				                loadedMesh.name=NowTimestamp;
@@ -218,8 +178,9 @@
 						 };
 						 this.保存  = function () {
 						 	 var allChildren = scene.children;
+						 	 console.log(allChildren.length+"----");
 						 	 for (var sum=0; sum< allChildren.length;sum++) {
-						 	 	if(sum>7){
+						 	 	if(sum>16){
 						 	 		console.log(allChildren[sum]);
 						 	 		console.log(allChildren[sum].name+"第"+sum+"个物体的x="+allChildren[sum].position.x+"Z="+allChildren[sum].position.z+"旋转="+allChildren[sum].rotation.y);
 						 	 	}
@@ -273,13 +234,13 @@
 			        	 renderScene();
 			        	 requestAnimationFrame(animate);
 			        }
-				        var clock = new THREE.Clock();
-			       		var delta = clock.getDelta();
+			        var clock = new THREE.Clock();
+		       		var delta = clock.getDelta();
 					function renderScene(){
 						//trackballControls.update(delta);
 						 renderer.render(scene,camera);
 					}	 
-				//初始化帧数状态
+					//初始化帧数状态
 					function initStats(){
 						var stats = new Stats();
 						stats.setMode(0);
@@ -291,38 +252,6 @@
 					}
 			}
 			
-
-			
-			
-			function updateModelType(){
-				var modelTypeHtml = '<div style="padding-right:10px;padding-left:10px">';
-					
-				modelTypeHtml +='<img  src="img/wen.jpg" id="wen" name = "wen" onclick="checkEnd(this.src,this.name)" style="width: 200px; height: 200px; margin:5px;"/>';
-					modelTypeHtml +='<img  src="img/tv.jpg" id="tv" name = "tv" onclick="checkEnd(this.src,this.name)" style="width: 200px; height: 200px; margin:5px;"/>';
-
-					modelTypeHtml+='</div>';
-						 	layer.open({
-						 		 title: '双击选择模型',
-						 		 skin: 'layui-layer-demo',
-								  type: 1,
-								  anim:2,
-								  skin: 'layui-layer-rim', //加上边框
-								  area: ['650px', '500'], //宽高
-								  content: modelTypeHtml
-							});
-							
-			}
-			function checkEnd(picUrl,name){
-				layer.closeAll();
-				$("#modelPic").attr('src',picUrl); 
-				console.log(name);
-				 $("#modeName").text(name);
-			}
-			
-			
-			$("#quan").click(function(){
-			        screenfull.toggle();
-			});
 		</script>
 	</body>
 </html>

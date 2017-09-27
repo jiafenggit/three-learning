@@ -294,5 +294,31 @@
 	            scene.add(cubeK1);
 		    
 			}
+			
+			
+			function updateModelType(){
+				var modelTypeHtml = '<div style="padding-right:10px;padding-left:10px">';
+					
+				modelTypeHtml +='<img  src="img/wen.jpg" id="wen" name = "wen" onclick="checkEnd(this.src,this.name)" style="width: 200px; height: 200px; margin:5px;"/>';
+					modelTypeHtml +='<img  src="img/tv.jpg" id="tv" name = "tv" onclick="checkEnd(this.src,this.name)" style="width: 200px; height: 200px; margin:5px;"/>';
+
+					modelTypeHtml+='</div>';
+						 	layer.open({
+						 		 title: '点击选择模型',
+						 		 skin: 'layui-layer-demo',
+								  type: 1,
+								  anim:2,
+								  skin: 'layui-layer-rim', //加上边框
+								  area: ['650px', '500'], //宽高
+								  content: modelTypeHtml
+							});
+							
+			}
+			function checkEnd(picUrl,name){
+				layer.closeAll();
+				$("#modelPic").attr('src',picUrl); 
+				console.log(name);
+				 $("#modeName").text(name);
+			}
 		
 		
