@@ -108,7 +108,7 @@
 				camera.lookAt(scene.position);
 			
 				//添加材质灯光阴影
-				 var spotLight = new THREE.SpotLight(0xffffff);
+				 var spotLight = new THREE.SpotLight (0xffffff);
 				 spotLight.shadowDarkness = 0.1;
 				 spotLight.position.set(20,40,30);
 				 spotLight.castShadow = true;
@@ -120,6 +120,34 @@
 				 $("#WebGL-output").append(renderer.domElement);
 				 addRoom();
 				 //【遍历机柜放入场景】
+					var loader = new THREE.OBJLoader();
+				      		  	loader.load('obj/jigui.obj', function (loadedMesh) {
+				      		  
+				      			var material = new THREE.MeshLambertMaterial();
+				           		 loadedMesh.children.forEach(function (child) {
+				            	child.castShadow = true;
+				            		child.name="aaa";
+				                child.material = material;
+				                child.geometry.computeFaceNormals();
+				                child.geometry.computeVertexNormals();
+				            });
+					            mesh = loadedMesh;
+					            loadedMesh.scale.set(0.02, 0.02, 0.02);
+					            loadedMesh.rotation.x =0;
+					            loadedMesh.rotation.y =0.01;
+					            loadedMesh.rotation.z =0;
+				                loadedMesh.position.x = -20;
+				                loadedMesh.position.y = 0.01;
+				                loadedMesh.position.z = 12;
+				                // add the cube to the scene
+				                var NowTimestamp = "obj_"+Date.parse(new Date());
+				                
+				                loadedMesh.name=NowTimestamp;
+				                scene.add(loadedMesh);
+				                 
+		           			});
+					
+					
 					
 			        animate();
 			       
