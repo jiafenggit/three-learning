@@ -1,0 +1,79 @@
+{
+"List":[
+    {
+       "id":1,
+"name":"room-01",
+"number":"NBS111154",
+"model":{
+       "model_id":1,
+       "model_name":"长形柜台",
+       "model_img":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1506655975821&di=7fe53db40a781d898b191df1b32bfd72&imgtype=0&src=http%3A%2F%2Fimg1.bsw360.cn%2F2016%2F3%2F13%2F20160313150231941.jpg",
+       "model_type":"obj/jiazi.obj"
+},
+"x":-10,
+"y":0,
+"z":6,
+"status":1
+    },
+{
+       "id":2,
+"name":"room-02",
+"number":"NBS444425",
+"model":{
+       "model_id":2,
+       "model_name":"方体柜子",
+       "model_img":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1506656237631&di=d9048ac0ea8d4bebe6f2a2580e4081f4&imgtype=0&src=http%3A%2F%2Fwww.qianqigroup.com%2FUpload%2Fproduct%2Fmax%2FSeverCabinet%2F19Inch19USeverCabinet11-18462028953.jpg",
+       "model_type":"obj/jigui.obj"
+},
+"x":-20,
+"y":0,
+"z":6,
+"status":1
+    },
+    {
+       "id":3,
+"name":"room-03",
+"number":"NBS444423",
+"model":{
+       "model_id":2,
+       "model_name":"方体柜子",
+       "model_img":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1506656237631&di=d9048ac0ea8d4bebe6f2a2580e4081f4&imgtype=0&src=http%3A%2F%2Fwww.qianqigroup.com%2FUpload%2Fproduct%2Fmax%2FSeverCabinet%2F19Inch19USeverCabinet11-18462028953.jpg",
+       "model_type":"obj/jigui.obj"
+},
+"x":20,
+"y":0,
+"z":6,
+"status":1
+
+    },
+    {
+       "id":4,
+"name":"room-04",
+"number":"NBS444566",
+"model":{
+       "model_id":2,
+       "model_name":"方体柜子",
+       "model_img":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1506656237631&di=d9048ac0ea8d4bebe6f2a2580e4081f4&imgtype=0&src=http%3A%2F%2Fwww.qianqigroup.com%2FUpload%2Fproduct%2Fmax%2FSeverCabinet%2F19Inch19USeverCabinet11-18462028953.jpg",
+       "model_type":"obj/jigui.obj"
+},
+"x":10,
+"y":0,
+"z":6,
+"status":0
+    },{
+       "id":5,
+"name":"room-05",
+"number":"NBS1118",
+"model":{
+       "model_id":1,
+       "model_name":"长形柜台",
+       "model_img":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1506655975821&di=7fe53db40a781d898b191df1b32bfd72&imgtype=0&src=http%3A%2F%2Fimg1.bsw360.cn%2F2016%2F3%2F13%2F20160313150231941.jpg",
+       "model_type":"obj/jiazi.obj"
+},
+"x":-10,
+"y":0,
+"z":-5,
+"status":1
+    }
+]
+}
