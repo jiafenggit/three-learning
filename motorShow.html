@@ -27,20 +27,20 @@
 	</style>
 	<body>
 
-	<div id="titile" style="height: 10%;">
+	<div id="titile" style="height: 15%;">
      <p style="color: white; font-size:1em; line-height:100%;">鑫格建模系统</p>
-     <!--<p style="color: white; font-size:0.5em; line-height:100%;">
+    <p style="color: white; font-size:0.5em; line-height:100%;">
      	<a class="upUrl" style="color: bisque; text-decoration: none;" href="motorEdit.html">[  进入机柜管理  ]</a>
-     </p>-->
+     </p>
 	</div>
-	
+	<!--
 	<div class="menu">
 		<p><img class="menuImg" id="menuImg1"  style="width:50%;" src="img/edit.jpg"/></p>
 		<!--<p><img class="menuImg" id="menuImg2"  style="width:50%;" src="img/edit.jpg"/></p>
 		<p><img class="menuImg" id="menuImg3" style="width:50%;" src="img/edit.jpg"/></p>
 		<p><img class="menuImg" id="menuImg4" style="width:50%;" src="img/edit.jpg"/></p>
-		<p><img class="menuImg" id="menuImg5" style="width:50%;" src="img/edit.jpg"/></p>-->
-	</div>
+		<p><img class="menuImg" id="menuImg5" style="width:50%;" src="img/edit.jpg"/></p>
+	</div>-->
 	
 		<div id="Stats-output">
 		</div>
@@ -63,8 +63,6 @@
 				
 				//编辑代码处
 				scene = new THREE.Scene();//场景构建
-				
-				//scene.fog = new THREE.Fog(0xffffff,0.015,100);雾化效果
 				camera = new THREE.PerspectiveCamera(45,window.innerWidth/window.innerHeight,0.1,1000);//相机构建
 				
 				//创建控件并绑定在相机上
@@ -119,15 +117,15 @@
 			var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );  
 			skyBox.castShadow = true;
 			skyBox.position.x = 17;
-			skyBox.position.y = 0.5;
+			skyBox.position.y = 1;
 			skyBox.position.z = 13;
 			scene.add(skyBox);  
 			border = new THREE.BoxHelper( skyBox,0x0dc3b4 );//设置边框，这个边框不会旋转
   			scene.add( border );
 			
 			
-			//添加材质灯光阴影
-				 var spotLight = new THREE.SpotLight (0xABABAB);
+				 //添加材质灯光阴影
+				 var spotLight = new THREE.SpotLight(0xABABAB);
 				 spotLight.shadowDarkness = 0.1;
 				 spotLight.position.set(20,40,30);
 				 spotLight.castShadow = true;
@@ -139,14 +137,11 @@
 				 $("#WebGL-output").append(renderer.domElement);
 				 addRoom();
 				 //【遍历机柜放入场景】
-				 
-				 
 				 $.ajax({
 				 	type:"GET", 
 				 	url:"json/data.json",
 				 	success:function(data){
 				 		var List = data.List;
-				 		
 				 		$.each(List, function(index,val) {
 				 			var loader = new THREE.OBJLoader();
 				 				if(List[index].status==0){
@@ -157,29 +152,21 @@
 							                child.geometry.computeFaceNormals();
 							                child.geometry.computeVertexNormals();
 							            });
-							
-							            mesh = loadedMesh;
-							            loadedMesh.scale.set(1, 1,1);
-							            loadedMesh.rotation.x =0;
-							            loadedMesh.rotation.y =List[index].y;
-							            loadedMesh.rotation.z =3;
-						                loadedMesh.position.x = List[index].x;
-						                loadedMesh.position.y = 2.5;
-						                loadedMesh.position.z = List[index].z;
-						                loadedMesh.opacity = 0.5;
-							            scene.add(loadedMesh);
+								            mesh = loadedMesh;
+								            loadedMesh.scale.set(1.5, 1.5,1.5);
+								            loadedMesh.rotation.x =0;
+								            loadedMesh.rotation.y =List[index].y;
+								            loadedMesh.rotation.z =3;
+							                loadedMesh.position.x = List[index].x;
+							                loadedMesh.position.y = 4;
+							                loadedMesh.position.z = List[index].z;
+							                loadedMesh.opacity = 0.5;
+								            scene.add(loadedMesh);
 							        });
 				 				}
-				 			
-				 			
-				 			
-				 			
-				 			
-				 			
 				      		  	loader.load(List[index].model.model_type, function (loadedMesh) {
-				      		  
 				      			var material = new THREE.MeshLambertMaterial();
-				           		 loadedMesh.children.forEach(function (child) {
+				           		loadedMesh.children.forEach(function (child) {
 				            	child.castShadow = true;
 				            	child.name="child";
 				                child.material = material;
@@ -187,25 +174,18 @@
 				                child.geometry.computeVertexNormals();
 				            });
 					            mesh = loadedMesh;
-					            loadedMesh.scale.set(0.01, 0.01, 0.01);
+					            loadedMesh.scale.set(0.015, 0.015, 0.015);
 					            loadedMesh.rotation.x =0;
 					            loadedMesh.rotation.y =List[index].y;
 					            loadedMesh.rotation.z =0;
 				                loadedMesh.position.x = List[index].x;
 				                loadedMesh.position.y = 0;
 				                loadedMesh.position.z = List[index].z;
-				              
 				                loadedMesh.name=List[index].number;
 				                scene.add(loadedMesh);
-				                 
-		           			});
-				 			
-				 			
-				 			
-				 			
-				 			
+		           		});	
 				 		});
-				 		layer.closeALl();
+				 		//layer.closeAll();
 				 	}
 				 	
 				 })

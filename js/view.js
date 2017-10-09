@@ -212,7 +212,7 @@
 		        color:0xffffff //线条颜色
 		    });//材质对象
 		    var line=new THREE.Line(geometryLine,materialLine);//线条模型对象
-		    scene.add(line);//线条对象添加到场景中
+		    //scene.add(line);//线条对象添加到场景中
 			var geometryLine2 = new THREE.Geometry();//声明一个空几何体对象
 		    var p1Line2 = new THREE.Vector3(-18,0,13);//顶点1坐标
 		    var p2Line2 = new THREE.Vector3(-23,0,13);//顶点2坐标
@@ -221,7 +221,7 @@
 		        color:0xffffff //线条颜色
 		    });//材质对象
 		    var line2=new THREE.Line(geometryLine2,materialLine2);//线条模型对象
-		   // scene.add(line2);//线条对象添加到场景中	
+		    //scene.add(line2);//线条对象添加到场景中	
 				
 			var geometryzz = new THREE.Geometry();//声明一个空几何体对象
 			 var materialzz=new THREE.LineBasicMaterial({
@@ -279,7 +279,7 @@
 	            cube2.position.z = 0;
 	            cube2.castShadow = true;
 	            // 同样的，得指定它在坐标系中的位置。
-	            //scene.add(cube2);
+	           scene.add(cube2);
 		    
 		     			// 创建好一个方块的材质 (第一面墙脚头)
 				var cubeGeometryK1 = new THREE.CubeGeometry(0.4,0.4,26);
@@ -291,7 +291,7 @@
 	            cubeK1.position.z = 0;
 	            cubeK1.castShadow = true;
 	            // 同样的，得指定它在坐标系中的位置。
-	            //scene.add(cubeK1);
+	            scene.add(cubeK1);
 		    
 			}
 			

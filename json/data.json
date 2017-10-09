@@ -17,7 +17,7 @@
     },
 {
        "id":2,
-"name":"room-02",
+"name":"room-01",
 "number":"NBS444425",
 "model":{
        "model_id":2,
@@ -32,7 +32,7 @@
     },
     {
        "id":3,
-"name":"room-03",
+"name":"room-01",
 "number":"NBS444423",
 "model":{
        "model_id":2,
@@ -48,7 +48,7 @@
     },
     {
        "id":4,
-"name":"room-04",
+"name":"room-01",
 "number":"NBS444566",
 "model":{
        "model_id":2,
@@ -62,7 +62,7 @@
 "status":0
     },{
        "id":5,
-"name":"room-05",
+"name":"room-01",
 "number":"NBS1118",
 "model":{
        "model_id":1,
