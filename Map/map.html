@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ECharts map Demo</title>
+</head>
+<style>
+#divPiao1{
+	background-color:black; width:200px; height:100px;
+	 position: fixed; right:20px; top:20px;
+	 filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;
+	 color: white;font-size: 10px;border-top:2px solid #df2532 ;border-radius: 10px;
+}
+#divPiao2{
+	background-color:black; width:200px; height:100px;
+	 position: fixed; right:20px; top:140px;
+	 filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;
+	 color: white;font-size: 10px;border-top:2px solid #df2532 ;border-radius: 10px;
+}
+#divPiao3{
+	background-color:black; width:200px; height:100px;
+	 position: fixed; right:20px; top:260px;
+	 filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;
+	 color: white;font-size: 10px;border-top:2px solid #df2532 ;border-radius: 10px;
+}
+#divPiao4{
+	background-color:black; width:200px; height:100px;
+	 position: fixed; right:20px; top:380px;
+	 filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;
+	 color: white;font-size: 10px;border-top:2px solid #df2532 ;border-radius: 10px;
+}
+
+</style>
+<body>
+
+	<div id="map-wrap" style="height:800%;">
+		<!-- 这里以后是地图 -->
+	</div>
+	<div id="divPiao1">
+		<p style="margin-left: 20px;">1.客户名称: 北京同仁医院</p>
+		<p style="margin-left: 20px;">2.设备编码: NBV00001</p>
+		<p style="margin-left: 20px;">3.故障分类: 线路故障老化</p>
+    </div>
+    <div id="divPiao2">
+		<p style="margin-left: 20px;">1.客户名称: 上海停刊机械</p>
+		<p style="margin-left: 20px;">2.设备编码: NBV99995</p>
+		<p style="margin-left: 20px;">3.故障分类: 线路故障老化</p>
+    </div>
+    <div id="divPiao3">
+		<p style="margin-left: 20px;">1.客户名称: 郑州滇西电子科技</p>
+		<p style="margin-left: 20px;">2.设备编码: NBV555568</p>
+		<p style="margin-left: 20px;">3.故障分类: 未知原因</p>
+    </div>
+    <div id="divPiao4">
+		<p style="margin-left: 20px;">1.客户名称: 上海搭的菱纱科技</p>
+		<p style="margin-left: 20px;">2.设备编码: NBV998956</p>
+		<p style="margin-left: 20px;">3.故障分类: 设备元件损坏</p>
+    </div>
+</body>
+<script type="text/javascript" src="../js/echarts/echarts.js" ></script>
+<script type="text/javascript" src="../js/echarts/china.js" ></script>
+<script type="text/javascript" src="../js/jquery-2.0.3.min.js" ></script>
+<script type="text/javascript" src="../layer/layer.js" ></script>
+<script>
+	$(function(){
+		
+	});
+	
+	
+	$.get('../json/china.json', function (chinaJson) {
+
+		echarts.registerMap('china', chinaJson); // 注册地图
+
+		var mapChart = echarts.init(document.getElementById('map-wrap'));
+			mapChart.showLoading();//加载数据前显示的动画效果
+		
+		
+		var myData = [
+		
+			{name: '93', value: [100.15, 41.89, 90,0]},
+		  	{name: '94', value: [110.15, 29.89, 90,0]},
+		  {name: '96', value: [105.15, 31.89, 90,0]},
+		  {name: '98', value: [120.15, 30.89, 90,0]},
+		]
+		var myData2 = [
+		
+			{name: '89', value: [121.15, 31.89, 90,0]},
+		  	{name: '90', value: [109.781327, 39.608266, 120,1]},
+		  	{name: '91', value: [120.38, 37.35, 142,0]},
+		    {name: '92', value: [120.207216, 29.985295, 123,1]},
+		  
+		]
+  		var option = {
+  			title: {
+                text: '全国机房展示系统',
+                x: 'center',
+                textStyle: {
+                    color: '#ffffff'
+                }
+            }, tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    return "客户名称:上海停刊机械<br/>机房名称:停刊机房01<br/>机房地址:xxx省xxx市xxx区";
+                }
+            },
+            
+	  			animation: true,
+	  			roam: true,
+  				geo: {
+	       			map: 'china',
+		        	itemStyle: {					// 定义样式
+		            normal: {					// 普通状态下的样式
+		                areaColor: '#323c48',
+		                borderColor: '#111',
+		                color:'#ffffff'
+		            },
+		            emphasis: {					// 高亮状态下的样式
+		                areaColor: '#2a333d'
+		            }
+		       		}
+	    		},
+				backgroundColor: '#404a59',  
+				series: [
+							{
+								name: '正常', // series名称
+								type: 'scatter', // series图表类型
+								coordinateSystem: 'geo', // series坐标系类型
+								data: myData,
+								symbolSize: function (val) {
+					                return val[2] / 10;
+					            },
+								itemStyle: {
+				                normal: {
+				                   	 color:"#4cf25c",
+				                     shadowBlur: 10,
+				                }
+           					 	}
+							},
+							{
+					            name: '故障',
+					            type: 'effectScatter',
+					            coordinateSystem: 'geo',
+					            data: myData2,
+					            symbolSize: function (val) {
+					                return val[2] / 10;
+					            },
+					            showEffectOn: 'render',
+					            rippleEffect: {
+					                brushType: 'stroke',
+					                 scale:5
+					            },
+					            hoverAnimation: true,
+					            itemStyle: {
+					                normal: {
+					                    color: '#df2532',
+					                    shadowBlur: 10,
+					                    shadowColor: '#333'
+					                }
+					            },
+					            zlevel: 1
+					        }
+						]
+			
+  			}
+ 		mapChart.setOption(option);
+ 		  mapChart.hideLoading();//加载数据完成后隐藏动画
+ 		mapChart.on('mousemove', function (params) {
+		    var city = params.name;
+		    if (!isNaN(city)) { 
+		    	
+		　　} 
+		});
+		mapChart.on('click', function (params) {
+			var city = params.name;
+			 if (!isNaN(city)) { 
+			　　 	layer.confirm('确定要进入机房么？', {
+				  btn: ['进入','取消'] //按钮
+				  ,title:""
+				}, function(){
+				   window.location.href="../welcome.html"; 
+				}, function(){
+				  layer.closeAll();
+				});
+		　　} 
+			
+						
+		   
+		});
+		
+  	});
+
+	
+</script>
+</html>

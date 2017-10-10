@@ -51,7 +51,10 @@
 			window.onload = init();
 			var camera, scene, renderer,trackballControls,mesh;
 			var gui;
-			
+			var INTERSECTED;//射线拾取
+			var raycaster;//射线拾取
+			var mouse;//射线拾取
+			var intersects = [];//射线拾取
 			
 			function init(){
 			layer.msg('数据加载中', {
@@ -133,6 +136,20 @@
 				 spotLight.target = plane;
 				 
 				 scene.add(spotLight);
+				//定义射线
+				raycaster = new THREE.Raycaster();
+			    mouse = new THREE.Vector2();
+				document.body.appendChild(renderer.domElement);
+				document.addEventListener('mousemove', onDocumentMouseMove, false);
+				 
+				function onDocumentMouseMove(event) {
+					event.preventDefault();
+					mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+					mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+				}
+
+			
+
 
 				 $("#WebGL-output").append(renderer.domElement);
 				 addRoom();
@@ -145,7 +162,7 @@
 				 		$.each(List, function(index,val) {
 				 			var loader = new THREE.OBJLoader();
 				 				if(List[index].status==0){
-							        loader.load('obj/pinecone.obj', function (loadedMesh) {
+							        /*loader.load('obj/pinecone.obj', function (loadedMesh) {
 							            var material = new THREE.MeshLambertMaterial({color: 0xFF4040});
 							            loadedMesh.children.forEach(function (child) {
 							                child.material = material;
@@ -162,7 +179,24 @@
 							                loadedMesh.position.z = List[index].z;
 							                loadedMesh.opacity = 0.5;
 								            scene.add(loadedMesh);
-							        });
+							        });*/
+							       	//创建一个方块
+						            var cubeGeometry = new THREE.CubeGeometry(0.2,0.2,0.2);
+						            // 创建一个方块的几何形状
+						           // var cubeMaterial = new THREE.MeshBasicMaterial({color: 0x7777ff,wireframe: true});
+						            var cubeMaterial = new THREE.MeshLambertMaterial({color:   0xFF3030});
+						            // 创建好一个方块的材质
+						            var cube = new THREE.Mesh(cubeGeometry,cubeMaterial);
+						            // 把它的形体和它的灵魂相结合，这时他就是一个完整的人
+						            cube.position.x = List[index].x;
+						            cube.position.y = 4;
+						            cube.position.z = List[index].z;
+						            cube.rotation.z =10;
+						             cube.rotation.x =10;
+						            cube.castShadow = true;
+						            cube.name="aaaa";
+						            // 同样的，得指定它在坐标系中的位置。
+						            scene.add(cube); 
 				 				}
 				      		  	loader.load(List[index].model.model_type, function (loadedMesh) {
 				      			var material = new THREE.MeshLambertMaterial();
@@ -224,18 +258,36 @@
 					
 					
 					
-			        animate();
-			       
-			        function animate(){
-			        	 stats.update();
-			        	 renderScene();
-			        	 requestAnimationFrame(animate);
-			        }
+			        renderScene();
+
 			        var clock = new THREE.Clock();
 		       		var delta = clock.getDelta();
 					function renderScene(){
+						 stats.update();
+			        	 requestAnimationFrame(renderScene);
 						trackballControls.update(delta);
 						 renderer.render(scene,camera);
+						 raycaster.setFromCamera(mouse, camera);
+					intersects = raycaster.intersectObjects(scene.children);
+					
+					if (intersects.length > 0) {
+						if (INTERSECTED != intersects[0].object) {
+							
+							//if (INTERSECTED)INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
+							INTERSECTED = intersects[0].object;
+							//INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
+							if(INTERSECTED.name != ""){
+							//INTERSECTED.material.color.set( 0x71C671 );
+							
+							alert(INTERSECTED.name);
+							}
+							
+							
+						}
+					}else {
+						//if (INTERSECTED) INTERSECTED.material.color.set(INTERSECTED.currentHex);
+						INTERSECTED = null;
+					}
 					}	 
 					//初始化帧数状态
 					function initStats(){
