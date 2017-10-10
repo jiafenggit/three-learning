@@ -24,9 +24,18 @@
 		.menuImg:hover {
 			cursor: pointer;
 		}
+		#divPiao1{
+	background-color:black; width:200px; height:80px;
+	 position: fixed; right:20px; top:20px;
+	 /*filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;*/
+	 color: white;font-size: 10px;border:1px solid #df2532 ;border-radius: 10px;
+}
 	</style>
 	<body>
-
+<div id="divPiao1">
+		<p style="margin-left: 20px;">设备编码: <span id="deviceNum" >暂无</span></p>
+		<p style="margin-left: 20px;">故障分类: <span id="deviceErrorInfo" >暂无</span></p>
+    </div>
 	<div id="titile" style="height: 15%;">
      <p style="color: white; font-size:1em; line-height:100%;">鑫格建模系统</p>
     <p style="color: white; font-size:0.5em; line-height:100%;">
@@ -278,15 +287,15 @@
 							//INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
 							if(INTERSECTED.name != ""){
 							//INTERSECTED.material.color.set( 0x71C671 );
-							
-							alert(INTERSECTED.name);
+							//捕获页
+								$("#deviceNum").html("NBV00001");
+								$("#deviceErrorInfo").html("线路故障老化");
 							}
-							
-							
 						}
 					}else {
 						//if (INTERSECTED) INTERSECTED.material.color.set(INTERSECTED.currentHex);
 						INTERSECTED = null;
+						layer.closeAll();
 					}
 					}	 
 					//初始化帧数状态
