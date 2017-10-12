@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="refresh" charset="UTF-8" content="2;url=motorShow.html">
+		<meta http-equiv="refresh" charset="UTF-8" <!--content="2;url=motorShow.html"-->>
+		<script type="text/javascript" src="js/jquery-2.0.3.min.js" ></script>
+		<script type="text/javascript" src="js/getUrlParam.js" ></script>
 		<title></title>
 	</head>
 	<style type="text/css">
@@ -27,8 +29,29 @@
 	<body>
 		<div class="center">
 			<p class="title">鑫格云监控模型展示系统</p>
-			<p class="info">机房[ <span id="roomId" style="color:red">XG000015</span> ]系统进入中</p>
+			<p class="info">机房[ <span id="roomName" style="color:red"></span> ]系统进入中</p>
 			<p><img src="img/loading-1.gif"/></p>
 		</div>
 	</body>
+	<script>
+		window.onload = function(){ 
+		var roomId=getUrlParam("roomId"); 
+			/*$.ajax({
+				type:"POST",
+				contentType: "application/x-www-form-urlencoded; charset=utf-8", 
+				url:apiUrl+"information/list",
+				data:{roomId:8,},
+				dataType: "json", 
+			    success: function(data){
+			  	if(data.code == 100){
+					
+			  	}else{
+			  		alert(data.message);
+			  	}
+			   }
+			});*/
+			$("#roomName").text("张三的机房");
+		} 
+	
+	</script>
 </html>

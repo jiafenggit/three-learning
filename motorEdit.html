@@ -115,7 +115,7 @@
 				 		var List = data.List;
 				 		$.each(List, function(index,val) {
 				 			var loader = new THREE.OBJLoader();
-				 				if(List[index].status==0){
+				 				/*if(List[index].status==0){
 							        loader.load('obj/pinecone.obj', function (loadedMesh) {
 							            var material = new THREE.MeshLambertMaterial({color: 0xFF4040});
 							            loadedMesh.children.forEach(function (child) {
@@ -134,7 +134,7 @@
 							                loadedMesh.opacity = 0.5;
 								            scene.add(loadedMesh);
 							        });
-				 				}
+				 				}*/
 				      		  	loader.load(List[index].model.model_type, function (loadedMesh) {
 				      			var material = new THREE.MeshLambertMaterial();
 				           		loadedMesh.children.forEach(function (child) {

@@ -11,6 +11,22 @@
 	 filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;
 	 color: white;font-size: 10px;border-top:2px solid #df2532 ;border-radius: 10px;
 }
+#divPiao1 :hover {
+	cursor: pointer;
+}
+#divPiao2 :hover {
+	cursor: pointer;
+}
+#divPiao3 :hover {
+	cursor: pointer;
+}
+#divPiao4 :hover {
+	cursor: pointer;
+}
+#divPiao5 :hover {
+	cursor: pointer;
+}
+
 #divPiao2{
 	background-color:black; width:200px; height:100px;
 	 position: fixed; right:20px; top:140px;
@@ -87,22 +103,22 @@
 		
 		var myData = [
 		
-			{name: '93', value: [100.15, 41.89, 90,0]},
-		  	{name: '94', value: [110.15, 29.89, 90,0]},
-		  {name: '96', value: [105.15, 31.89, 90,0]},
-		  {name: '98', value: [120.15, 30.89, 90,0]},
+			{name: '93', value: [100.15, 41.89, 90]},
+		  	{name: '94', value: [110.15, 29.89, 90]},
+		  {name: '96', value: [105.15, 31.89, 90]},
+		  {name: '98', value: [120.15, 30.89, 90]},
 		]
 		var myData2 = [
 		
-			{name: '89', value: [121.15, 31.89, 90,0]},
-		  	{name: '90', value: [109.781327, 39.608266, 120,1]},
-		  	{name: '91', value: [120.38, 37.35, 142,0]},
-		    {name: '92', value: [120.207216, 29.985295, 123,1]},
+			{name: '89', value: [121.15, 31.89, 90]},
+		  	{name: '90', value: [109.781327, 39.608266, 120]},
+		  	{name: '91', value: [120.38, 37.35, 142]}, 
+		    {name: '92', value: [120.207216, 29.985295, 123]},
 		  
 		]
   		var option = {
   			title: {
-                text: '全国机房展示系统',
+                text: '鑫格云监控全国机房展示系统',
                 x: 'center',
                 textStyle: {
                     color: '#ffffff'
@@ -174,12 +190,12 @@
   			}
  		mapChart.setOption(option);
  		  mapChart.hideLoading();//加载数据完成后隐藏动画
- 		mapChart.on('mousemove', function (params) {
+ 		/*mapChart.on('mousemove', function (params) {
 		    var city = params.name;
 		    if (!isNaN(city)) { 
 		    	
 		　　} 
-		});
+		});*/
 		mapChart.on('click', function (params) {
 			var city = params.name;
 			 if (!isNaN(city)) { 
@@ -187,18 +203,65 @@
 				  btn: ['进入','取消'] //按钮
 				  ,title:""
 				}, function(){
-				   window.location.href="../welcome.html"; 
+				   window.location.href="../welcome.html?roomId="+city; 
 				}, function(){
 				  layer.closeAll();
 				});
 		　　} 
-			
-						
-		   
+
 		});
 		
   	});
 
-	
+	$("#divPiao1").click(function(){
+	  	layer.confirm('确定要进入机房么？', {
+				  btn: ['进入','取消'] //按钮
+				  ,title:""
+				}, function(){
+				   window.location.href="../welcome.html"; 
+				}, function(){
+				  layer.closeAll();
+				});
+	});
+	$("#divPiao1").click(function(){
+	  	layer.confirm('确定要进入机房么？', {
+				  btn: ['进入','取消'] //按钮
+				  ,title:""
+				}, function(){
+				   window.location.href="../welcome.html"; 
+				}, function(){
+				  layer.closeAll();
+				});
+	});
+	$("#divPiao2").click(function(){
+	  	layer.confirm('确定要进入机房么？', {
+				  btn: ['进入','取消'] //按钮
+				  ,title:""
+				}, function(){
+				   window.location.href="../welcome.html"; 
+				}, function(){
+				  layer.closeAll();
+				});
+	});
+	$("#divPiao3").click(function(){
+	  	layer.confirm('确定要进入机房么？', {
+				  btn: ['进入','取消'] //按钮
+				  ,title:""
+				}, function(){
+				   window.location.href="../welcome.html"; 
+				}, function(){
+				  layer.closeAll();
+				});
+	});
+	$("#divPiao4").click(function(){
+	  	layer.confirm('确定要进入机房么？', {
+				  btn: ['进入','取消'] //按钮
+				  ,title:""
+				}, function(){
+				   window.location.href="../welcome.html"; 
+				}, function(){
+				  layer.closeAll();
+				});
+	});
 </script>
 </html>

@@ -25,16 +25,68 @@
 			cursor: pointer;
 		}
 		#divPiao1{
-	background-color:black; width:200px; height:80px;
+	background-color:black; width:200px; height:90px;
 	 position: fixed; right:20px; top:20px;
 	 /*filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;*/
 	 color: white;font-size: 10px;border:1px solid #df2532 ;border-radius: 10px;
 }
+
+
+ #main {  
+            height: 1800px;  
+            padding-top: 90px;  
+            text-align: center;  
+        }  
+        #fullbg {  
+            background-color: gray;  
+            left: 0;  
+            opacity: 0.5;  
+            position: absolute;  
+            top: 0;  
+            z-index: 3;  
+            filter: alpha(opacity=50);  
+            -moz-opacity: 0.5;  
+            -khtml-opacity:0.5;  
+        }  
+  
+        #dialog {  
+            background-color: black;  
+            border: 1px solid rgba(0,0,0, 0.4);  
+            height: 400px;  
+            margin: -200px 0 0 -100px;  
+            padding: 1px;  
+            position: fixed !important; /* 浮动对话框 */  
+            position: absolute;  
+            top: 50%;  
+            left: 25%;
+            width: 60%;  
+            z-index: 5;  
+            border-radius: 5px;  
+            display: none;  
+        }  
+        #dialog p {  
+                margin: 0 0 12px;  
+                height: 24px;  
+                line-height: 24px;  
+                background: #CCCCCC;  
+         }  
+         #dialog p.close {  
+                text-align: right;  
+                padding-right: 10px;  
+         }  
+        #dialog p.close a {  
+                color: #fff;  
+                text-decoration: none;  
+        }  
+
+
+
 	</style>
 	<body>
 <div id="divPiao1">
-		<p style="margin-left: 20px;">设备编码: <span id="deviceNum" >暂无</span></p>
+		<p style="margin-left: 20px;">机柜名称: <span id="deviceNum" >暂无</span></p>
 		<p style="margin-left: 20px;">故障分类: <span id="deviceErrorInfo" >暂无</span></p>
+		<p style="margin-left: 20px; text-align: center;"><a id="infoDetail" style="color: red;">查看详情</a></p>
     </div>
 	<div id="titile" style="height: 15%;">
      <p style="color: white; font-size:1em; line-height:100%;">鑫格建模系统</p>
@@ -55,6 +107,17 @@
 		</div>
 		<div id="WebGL-output">
 		</div>
+		
+		 <div id="main">  
+            
+            <div id="fullbg"></div>  
+            <div id="dialog">  
+                <p class="close">  
+                    <a href="#" onclick="closeBg();">关闭</a></p>  
+                    <div id="detail" style="color: #44ca54;">故障分析:因为室内温度原因，造成设备的潮湿无法正常使用</div>  
+            </div>  
+        </div>  
+		
 		<script>
 			
 			window.onload = init();
@@ -170,7 +233,7 @@
 				 		var List = data.List;
 				 		$.each(List, function(index,val) {
 				 			var loader = new THREE.OBJLoader();
-				 				if(List[index].status==0){
+				 				
 							        /*loader.load('obj/pinecone.obj', function (loadedMesh) {
 							            var material = new THREE.MeshLambertMaterial({color: 0xFF4040});
 							            loadedMesh.children.forEach(function (child) {
@@ -193,7 +256,13 @@
 						            var cubeGeometry = new THREE.CubeGeometry(0.2,0.2,0.2);
 						            // 创建一个方块的几何形状
 						           // var cubeMaterial = new THREE.MeshBasicMaterial({color: 0x7777ff,wireframe: true});
-						            var cubeMaterial = new THREE.MeshLambertMaterial({color:   0xFF3030});
+						           var cubeMaterial;
+						           if(List[index].status==0){
+				 						cubeMaterial = new THREE.MeshLambertMaterial({color:   0xFF3030});
+				 					}else{
+				 						cubeMaterial = new THREE.MeshLambertMaterial({color:   0x7CCD7C});
+				 					}
+						            
 						            // 创建好一个方块的材质
 						            var cube = new THREE.Mesh(cubeGeometry,cubeMaterial);
 						            // 把它的形体和它的灵魂相结合，这时他就是一个完整的人
@@ -206,7 +275,7 @@
 						            cube.name="aaaa";
 						            // 同样的，得指定它在坐标系中的位置。
 						            scene.add(cube); 
-				 				}
+				 				
 				      		  	loader.load(List[index].model.model_type, function (loadedMesh) {
 				      			var material = new THREE.MeshLambertMaterial();
 				           		loadedMesh.children.forEach(function (child) {
@@ -312,6 +381,22 @@
 			$("#menuImg1").click(function(){
 				window.location.href = "motorEdit.html"
 			});
+			
+			$("#infoDetail").click(function(){
+				 var bh = $("body").height();  
+	            var bw = $("body").width();  
+	            $("#fullbg").css({  
+	                height: bh,  
+	                width: bw,  
+	                display: "block"  
+	            });  
+	            $("#dialog").show(); 
+			});
+
+	        //关闭灰色 jQuery 遮罩   
+	        function closeBg() {  
+	            $("#fullbg,#dialog").hide();  
+	        }  
 			
 		</script>
 	</body>
